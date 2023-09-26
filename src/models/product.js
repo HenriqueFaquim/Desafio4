@@ -1,5 +1,7 @@
-const mongoose = require('mongoose')
-const pruductSchema = mongoose.Schema(
+const mongoose = require('mongoose');
+const validator = require('validator');
+
+const schema = new mongoose.Schema(
     {
         name:{
             type: String,
@@ -24,6 +26,6 @@ const pruductSchema = mongoose.Schema(
     }
 )
 
-const Product = mongoose.model('Product', pruductSchema);
+const Product = mongoose.model('Product', schema);
 
 module.exports = Product;

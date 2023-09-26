@@ -1,4 +1,5 @@
 const mongooseToSwagger = require('mongoose-to-swagger');
+const User = require('../src/models/user.js');
 const swaggerAutogen = require('swagger-autogen')({
     openapi: '3.0.0',
     language: 'pt-BR',
@@ -25,6 +26,11 @@ let doc = {
     ],
     consumes: ['application/json'],
     produces: ['application/json'],
+    components:{
+        schemas:{
+            User: mongooseToSwagger(User),
+        }
+    }
 }
 
 swaggerAutogen(outputFile, endpointFiles, doc).then(() => {

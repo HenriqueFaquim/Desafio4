@@ -1,0 +1,69 @@
+# nome da pipeline e variaveis de ambiente
+name: Pipeline CI/CD
+env:
+  NODE_ENV: production
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+#quando a pipeline vai ser execudada?
+on:
+  push:
+    branches:
+      - main
+#Inicio dos jobs 
+jobs:
+
+
+
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonando Repositório
+        uses: actions/checkout@v3
+
+      - name: Instalando pacotes
+        run: npm install
+
+      - name: Gerando o swagger.json
+        run: npm run autoDoc
+
+      - name: Apagando node_modules
+        run: rm -rf node_modules
+
+      - name: Apagando pasta .git
+        run: rm -rf .git
+
+      - name: Criando ZIP do código buildado
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_temporario
+          retention-days: 1
+          path: ./
+
+
+
+
+  deploy:
+    name: CD 
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixando o código buildado
+        uses: actions/download-artifact@v3
+        with:
+          name: build_temporario
+
+      - name: Instalando pacotes
+        run: npm install
+
+      - name: Instalando CLI da Vercel
+        run: npm install --global vercel@latest
+
+      - name: Buscando informações de ambiente no Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Buildando artefatos do projeto
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy de artefatos do projeto na Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

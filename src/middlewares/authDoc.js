@@ -14,14 +14,14 @@ async function authDocProducao(req, res, next) {
         res.status(401).set('Content-Type', 'text/html');
         res.send(Buffer.from(`
             <form method="post">
-            <p style="color:red;">Senha Incorreta! </p>
+            <p style="color:red;">Senha Incorreta!</p>
             <label for="senha"> Senha da Documentação:</label>
             <input type="password" name="senha" id="senha" />
             <button type="submit">Entrar</button>
             </form>
         `))
     }else{
-//caso a senha ainda não tenha sido digitada 
+//caso a senha ainda não tenha sido digitada
         res.status(200).set('Content-Type', 'text/html');
         res.send(Buffer.from(`
             <form method="post">

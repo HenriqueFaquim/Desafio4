@@ -15,11 +15,11 @@ let doc = {
     },
     servers: [
         {
-            url: "http://localhost:4000/",
+            url: "http://localhost:3000/",
             description: "Servidor localhost."
         },
         {
-            url: "https://dnc-board-tasks-back.vercel.app/",
+            url: "https://desafio4-2s4178f5b-henriquefaquim.vercel.app/",
             description: "Servidor de produção."
         }
     ],

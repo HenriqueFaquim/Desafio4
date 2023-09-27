@@ -27,8 +27,9 @@ router.post('/create', AuthUser, ConectToDB, async function(req, res) {
 router.get('/read', AuthUser, ConectToDB, async function(req, res) {
   try {
     //#swagger.tags = ["Tarefa"]
-    const usuarioCriador = req.userJwt.id;
-    const resBD = await Task.find({posicao, titulo, descricao, status, dataEntrega, usuarioCriador})
+    // #swagger.description = "Endpoint para obter todas as tarefas do usuario logado."
+    const usuarioLogado = req.userJwt.id;
+    const resBD = await Task.find({usuarioCriador: usuarioLogado}).populate("usuarioCriador");
 
     res.status(200).json({
       status: "Okay",
